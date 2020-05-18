@@ -9,9 +9,9 @@ Hi! Welcome to my Github!!
 For this Project I have used an Arduino Nano 33 BLE Sense and Raspberry Pi 3B+, the data obtained from the arduino is temperature and humidity.
 
 This project three different versions of obtaining Temperature and Humidity data from an Arduino Nano 33 BLE Sense
-  1. Serially read data from the Arduino to RPi and display the real-time values to the webserver running on RPi.
-  2. Send the Arduino data from any device that has internet access to RPi using MQTT Protocol.
-  3. Sned the Arduino data from any device that has internet access directly to the webserver running on RPi using MQTT over Websockets.
+  - Serially read data from the Arduino to RPi and display the real-time values to the webserver running on RPi.
+  - Send the Arduino data from any device that has internet access to RPi using MQTT Protocol.
+  - Send the Arduino data from any device that has internet access directly to the webserver running on RPi using MQTT over Websockets.
   
   
 1. Serially reading arduino data 
