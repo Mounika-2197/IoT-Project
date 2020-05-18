@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>CSS Website Layout</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  background-color:#FFFAFA;
+  margin: 0;
+}
+
+/* Style the header */
+.header {
+  background-color: #ffe4e1;
+  padding: 10px;
+  text-align: center;
+  font-size: smaller
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Welcome to my Website!!!</h1>
+  <p style="text-align:left"> Mounika Yakasiri </p>
+   <p style="text-align:left"> IoT Project: Raspberry Pi Web Server Environmental Sensing </p>
+  
+</div>
+
+</body>
+
+
+</html>
+
+	
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+	<script >
+var hostname = "10.0.0.207";
+var port = 9001;
+var clientId = "WebSocket";
+clientId += new Date().getUTCMilliseconds();;
+var topic = "test";
+
+mqttClient = new Paho.MQTT.Client(hostname, port, clientId);
+mqttClient.onMessageArrived = MessageArrived;
+mqttClient.onConnectionLost = ConnectionLost;
+Connect();
+
+/*Initiates a connection to the MQTT broker*/
+function Connect(){
+	mqttClient.connect({
+	onSuccess: Connected,
+	onFailure: ConnectionFailed,
+	keepAliveInterval: 10,
+});
+}
+
+/*Callback for successful MQTT connection */
+function Connected() {
+	console.log("Connected to broker");
+	mqttClient.subscribe(topic);
+}
+
+/*Callback for failed connection*/
+function ConnectionFailed(res) {
+	console.log("Connect failed:" + res.errorMessage);
+}
+
+/*Callback for lost connection*/
+function ConnectionLost(res) {
+	if (res.errorCode !== 0) {
+		console.log("Connection lost:" + res.errorMessage);
+		Connect();
+	}
+}
+
+/*Callback for incoming message processing */
+function MessageArrived(message) {
+	console.log(message.destinationName +" : " + message.payloadString);
+	
+	var a=parseInt(message.payloadString);
+	var ht=100-a;
+	document.getElementById("top").style.height=""+ht+"%" ;
+	document.getElementById("top").innerHTML=message.payloadString+ "&#176"+"C";
+	document.getElementById("container").style.backgroundColor="yellow";
+	switch(message.payloadString){
+		case "ON":
+			displayClass = "on";
+			break;
+		case "OFF":
+			displayClass = "off";
+			break;
+		default:
+			displayClass = "unknown";
+	}
+	var topic = message.destinationName.split("/");
+	if (topic.length == 3){
+		var ioname = topic[1];
+		UpdateElement(ioname, displayClass);
+	}
+}
+		</script>
+		
+		<meta charset="utf-8">
+		<title>Websocket</title>
+	</head>
+
+	<body>
+
+<div id="container">
+  <div id="top" style="width: 100%; background-color:white;text-align:center;"></div>
+</div>
+	</body>
+</html>
